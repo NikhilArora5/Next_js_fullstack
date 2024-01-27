@@ -5,23 +5,42 @@ import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Link from 'next/link';
-
+import axios from 'axios';
+import { useRouter } from 'next/navigation';
 const Login = () => {
+  const router = useRouter()
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   });
 
-  const handleChange = (event:any) => {
+  const handleChange = (event: any) => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
   };
 
-  const handleSubmit = (event:any) => {
+  const handleSubmit = (event: any) => {
     event.preventDefault();
     // Your form submission logic here
     console.log(formData);
+    login()
   };
 
+
+  const login = async () => {
+    try {
+
+      const res = await axios.post(`/api/login`, formData)
+      // console.log("--------res", res.data.success)
+      if (res.data.success) {
+        router.push("/profile")
+      }
+
+    } catch (error: any) {
+
+      console.log("----Error----", error.message)
+
+    }
+  }
   return (
     <Container component="main" maxWidth="xs">
       <div>
