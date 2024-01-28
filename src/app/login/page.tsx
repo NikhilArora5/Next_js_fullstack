@@ -23,8 +23,17 @@ const Login = () => {
     // Your form submission logic here
     console.log(formData);
     login()
+    // getdata()
   };
 
+  const getdata =async()=>{
+    try {
+      const res = await axios.get(`/api/getdata`)
+      
+    } catch (error) {
+      
+    }
+  }
 
   const login = async () => {
     try {
@@ -87,6 +96,8 @@ const Login = () => {
       <div>
         <p> Do not have an account? <Link href={"/signup"}>Signup</Link></p>
       </div>
+
+      <Button onClick={()=>getdata()}> Get Data</Button>
     </Container>
   );
 };

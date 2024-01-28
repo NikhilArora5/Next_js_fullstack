@@ -3,7 +3,7 @@ import User from "@/models/userModel";
 import { NextRequest, NextResponse } from "next/server";
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
-import {successResponseWithMessage,successResponseWithData,badRequest} from "@/helpers/apiResponses"
+import {successResponseWithMessage,successResponseWithData,badRequest,serverError} from "@/helpers/apiResponses"
 
 connect()
 
@@ -17,7 +17,6 @@ export async function POST(request: NextRequest){
         //check if user exists
         const user = await User.findOne({email})
         if(!user){
-            // return NextResponse.json({error: "User does not exist"}, {status: 400})
             return badRequest(NextResponse,"User does not exist m")
         }
         console.log("user exists");
@@ -26,7 +25,7 @@ export async function POST(request: NextRequest){
         //check if password is correct
         const validPassword = await bcryptjs.compare(password, user.password)
         if(!validPassword){
-            return NextResponse.json({error: "Invalid password"}, {status: 400})
+            return badRequest(NextResponse,"Invalid password")
         }
         console.log(user);
         
@@ -50,6 +49,6 @@ export async function POST(request: NextRequest){
         return response;
 
     } catch (error: any) {
-        return NextResponse.json({error: error.message}, {status: 500})
+        return serverError(NextResponse,error.message)
     }
 }

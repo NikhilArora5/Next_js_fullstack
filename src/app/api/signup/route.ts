@@ -6,7 +6,6 @@ import bcryptjs from "bcryptjs";
 import {successResponseWithMessage,successResponseWithData,badRequest} from "@/helpers/apiResponses"
 connect()
 
-
 export async function POST(request: NextRequest){
     try {
         const reqBody = await request.json()
@@ -59,3 +58,7 @@ export async function POST(request: NextRequest){
 
     }
 }
+
+
+
+

@@ -54,3 +54,16 @@ export async function badRequest(res, message) {
     }
   );
 }
+
+export async function serverError(res, message) {
+    message=message?message:"INTERNAL SERVER ERROR"
+  return res.json(
+    {
+      message,
+      status: 500,
+    },
+    {
+      status: 500,
+    }
+  );
+}
