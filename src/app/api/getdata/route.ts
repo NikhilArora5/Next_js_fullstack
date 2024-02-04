@@ -1,10 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
 
+import {getServerSession} from "next-auth/next";
+import connect from "@/dbConfig/connect";
+// import { getSession } from "next-auth/client"
+import {authOptions} from "@/app/api/auth/[...nextauth]/route";
+import {badRequest, successResponseWithData} from "@/helpers/apiResponses";
+import {verify} from "@/helpers/apiResponses";
 export async function GET(request:NextRequest){
+  let {success, data, message} = await verify(request);
+  if (!success) {
+    return badRequest(NextResponse, message);
+  }
 
-console.log("-----------GET DATA RUNNIGN")
+  console.log("-------DATA", data);
 
-    return NextResponse.json({
-        message:"send data"
-    },{status:200})
+  const req = request.nextUrl;
+
+  return successResponseWithData(NextResponse,true,"data fetched success",data)
 }

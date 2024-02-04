@@ -1,3 +1,61 @@
+import { authOptions } from "@/app/api/auth/[...nextauth]/route"
+import { getServerSession, } from "next-auth/next"
+import { NextResponse } from "next/server"
+import connect from "@/dbConfig/connect"
+import User from "@/models/userModel"
+connect()
+export async function verify(request) {
+  const path = request.nextUrl.pathname
+  const method = request.method
+  const session = await getServerSession(authOptions)
+  console.log("-------------PATH AND METHOD", {
+    path, method
+  })
+  if (!session) {
+    // console.log("------sesion on backend----")
+    return {
+      success: false,
+      message: "Not Authorized S01",
+
+    }
+  } else {
+    // console.log("----SESSION DATA backend----,", session)
+    const { user } = session
+    if (user && user?.id) {
+      let userId = user?.id
+      let email = user?.email
+      // const userData = await User.findOne({ email })
+      const userData = await User.findById(userId,{password:0})
+      if (!userData) {
+        console.log("--------ERROR")
+        return {
+          success: false,
+          message: "Not Authorized A01",
+
+        }
+
+      } else {
+        // console.log("---------user data",userData)
+        return {
+          success: true,
+          message: "success",
+          data: userData
+
+        }
+      }
+    }
+    console.log
+
+    return { autorized: true, session }
+  }
+
+}
+
+export async function sessionCheck(data) {
+  console.log("---data", data)
+
+  return
+}
 export async function successResponseWithMessage(res, success, msg) {
   return res.json(
     {

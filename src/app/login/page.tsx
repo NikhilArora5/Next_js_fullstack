@@ -7,6 +7,8 @@ import Grid from '@mui/material/Grid';
 import Link from 'next/link';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import { signIn } from 'next-auth/react';
+import { log } from 'console';
 const Login = () => {
   const router = useRouter()
   const [formData, setFormData] = useState({
@@ -22,8 +24,9 @@ const Login = () => {
     event.preventDefault();
     // Your form submission logic here
     console.log(formData);
-    login()
+    // login()
     // getdata()
+    loginNext()
   };
 
   const getdata =async()=>{
@@ -46,6 +49,30 @@ const Login = () => {
 
     } catch (error: any) {
 
+      console.log("----Error----", error.message)
+
+    }
+  }
+  const loginNext = async () => {
+    try {
+
+      const response = await signIn('credentials', {
+        email: "admin@gm.com",
+        password: "123456",
+        redirect: false,
+      });
+      
+      if(!response?.ok){
+        console.log("-----------error log",response)
+      }
+      console.log("RESONSE",{ response });
+      if (!response?.error) {
+        router.push('/');
+        router.refresh();
+      }
+
+    } catch (error: any) {
+      // window.location.href()
       console.log("----Error----", error.message)
 
     }

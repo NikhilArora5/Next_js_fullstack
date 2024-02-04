@@ -1,12 +1,14 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
  
+ import authMiddleware from "@/helpers/middleware"
+//  export { default } from "next-auth/middleware"
 // This function can be marked `async` if using `await` inside
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
 
     const path = request.nextUrl.pathname
     const token=request.cookies.get("token")
-    console.log("------COMMON MIDDLEWARE")
+    // console.log("------COMMON MIDDLEWARE")
 
   //   const isPublic=path==="/login"|| path==="/signup"
 
@@ -21,8 +23,11 @@ export function middleware(request: NextRequest) {
   //     return NextResponse.redirect(new URL('/denied', request.url))
   //   }
 
-    if (path.startsWith("/api/getdata")){
-      console.log("--------BACKEND- GET DATA----I AM FROM MIDDLEWARE",path)
+    if (path.startsWith("/api")){
+      // console.log("--------BACKEND- GET DATA----I AM FROM MIDDLEWARE",path)
+      // const res = NextResponse.next()
+      // return  await authMiddleware(request,NextResponse)
+      // // return res
     }
 
     
